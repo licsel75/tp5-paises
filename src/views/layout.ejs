@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar (se incluye desde partial) -->
+    <%- include('partials/navbar.ejs') %>
+
+    <!-- Contenido principal de cada vista -->
+    <main>
+        <%- body %>
+    </main>
+
+    <!-- Footer -->
+    <%- include('partials/footer.ejs') %>
+</body>
+</html>

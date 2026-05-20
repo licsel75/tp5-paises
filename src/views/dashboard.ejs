@@ -1,0 +1,43 @@
+<h1><%= titulo %></h1>
+
+<% if (paises && paises.length > 0) { %>
+    <table class="countries-table">
+        <thead>
+            <tr>
+                <th>Nombre oficial</th>
+                <th>Capital</th>
+                <th>Área (km²)</th>
+                <th>Población</th>
+                <th>GINI</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% paises.forEach(pais => { %>
+                <tr>
+                    <td><%= pais.name.official %></td>
+                    <td><%= pais.capital ? pais.capital.join(', ') : '-' %></td>
+                    <td><%= pais.area.toLocaleString() %></td>
+                    <td><%= pais.population.toLocaleString() %></td>
+                    <td><%= pais.gini || '-' %></td>
+                    <td class="table-actions">
+                        <a href="/paises/editar/<%= pais._id %>" class="btn edit">✏️ Editar</a>
+                        <button onclick="eliminar('<%= pais._id %>', '<%= pais.name.official %>')" class="btn delete">🗑️ Eliminar</button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } else { %>
+    <div class="alert warning">⚠️ No hay países cargados. Ejecutá el script de seed primero.</div>
+<% } %>
+
+<script>
+    function eliminar(id, nombre) {
+        if (confirm(`¿Eliminar el país "${nombre}"?`)) {
+            fetch(`/paises/eliminar/${id}?_method=DELETE`, { method: 'POST' })
+                .then(() => window.location.href = '/paises/dashboard')
+                .catch(err => console.error('Error:', err));
+        }
+    }
+</script>
