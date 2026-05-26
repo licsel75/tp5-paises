@@ -54,6 +54,9 @@ const countrySchema = new mongoose.Schema({
     versionKey: false
 });
 
+// nombre de la colección 
+//const SuperHero = mongoose.model('SuperHero', superHeroSchema, 'Grupo-15');
+
 // Forzar el uso de la colección compartida "Grupo-15"
 const Country = mongoose.model('Country', countrySchema, 'Grupo-15');
 

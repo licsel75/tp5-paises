@@ -50,3 +50,12 @@ export const deleteCountry = async (id) => {
         throw new Error(`Error al eliminar país: ${error.message}`);
     }
 };
+
+// filtrar paises por nombre
+export const buscarPorNombre = async (nombre) => {
+    try {
+        return await countryRepository.buscarPorNombre(nombre);
+    } catch (error) {
+        throw new Error(`Error al buscar países por nombre: ${error.message}`);
+    }
+};

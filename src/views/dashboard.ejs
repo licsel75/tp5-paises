@@ -1,5 +1,18 @@
 <h1><%= titulo %></h1>
 
+<!-- Formulario de búsqueda -->
+<div class="search-container">
+    <form action="/paises/dashboard" method="GET" class="search-form">
+        <input type="text" 
+               name="nombre" 
+               value="<%= busqueda %>" 
+               placeholder="Buscar por nombre oficial..." 
+               class="search-input">
+        <button type="submit" class="btn search">🔍 Buscar</button>
+        <a href="/paises/dashboard" class="btn clear">✖️ Limpiar</a>
+    </form>
+</div>
+
 <% if (paises && paises.length > 0) { %>
     <table class="countries-table">
         <thead>

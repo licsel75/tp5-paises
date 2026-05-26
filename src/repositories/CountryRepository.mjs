@@ -46,6 +46,15 @@ async eliminarPorId(id) {
 }
 
 
+//buscar paises  por nombre 
+async buscarPorNombre(nombre) {
+    return await Country.find({
+        'name.official': { $regex: nombre, $options: 'i' },
+        creador: "Salim",
+        tipoDocumento: "pais"
+    });
+}
+
 
 }
 

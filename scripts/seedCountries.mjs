@@ -34,15 +34,35 @@ const filterSpanishSpeaking = (countries) => {
 // ==========================================
 // 3. FUNCIÓN: Limpiar propiedades y agregar datos necesarios
 // ==========================================
-const cleanCountryData = (country) => {
+// const cleanCountryData = (country) => {
     // Procesar GINI: la API devuelve { "2016": 31.9 }, tomamos el primer valor
+    // let giniValue = null;
+    // if (country.gini && typeof country.gini === 'object') {
+    //     const years = Object.keys(country.gini);
+    //     if (years.length > 0) {
+    //         giniValue = country.gini[years[0]];
+    //     }
+    // }
+const cleanCountryData = (country) => {
+    // para procesar GINI: scamos promedio
     let giniValue = null;
-    if (country.gini && typeof country.gini === 'object') {
-        const years = Object.keys(country.gini);
-        if (years.length > 0) {
-            giniValue = country.gini[years[0]];
+if (country.gini && typeof country.gini === 'object') {
+    const years = Object.keys(country.gini);
+    if (years.length > 0) {
+        let sum = 0;
+        let count = 0;
+        for (const year of years) {
+            const value = country.gini[year];
+            if (typeof value === 'number') {
+                sum += value;
+                count++;
+            }
+        }
+        if (count > 0) {
+            giniValue = parseFloat((sum / count).toFixed(1));
         }
     }
+}
 
     return {
         name: {
