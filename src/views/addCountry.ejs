@@ -11,7 +11,9 @@
 <form action="/paises/agregar" method="POST" class="country-form">
     <div class="form-group">
         <label>Nombre oficial *</label>
-        <input type="text" name="name.official" value="<%= datos ? datos['name.official'] : '' %>" required>
+        <!-- quité los required -->
+          <!-- <input type="text" name="name.official" value="<%= datos ? datos['name.official'] : '' %>" required > -->
+        <input type="text" name="name.official" value="<%= datos ? datos['name.official'] : '' %>" >
     </div>
 
     <div class="form-group">
@@ -26,12 +28,14 @@
 
     <div class="form-group">
         <label>Área (km²) *</label>
-        <input type="number" step="1" name="area" value="<%= datos ? datos.area : '' %>" required>
+        <!-- <input type="number" step="1" name="area" value="<%= datos ? datos.area : '' %>" required> -->
+          <input type="number" step="1" name="area" value="<%= datos ? datos.area : '' %>" >
     </div>
 
     <div class="form-group">
         <label>Población *</label>
-        <input type="number" step="1" name="population" value="<%= datos ? datos.population : '' %>" required>
+        <input type="number" step="1" name="population" value="<%= datos ? datos.population : '' %>" >
+         <!-- <input type="number" step="1" name="population" value="<%= datos ? datos.population : '' %>" required> -->
     </div>
 
     <div class="form-group">

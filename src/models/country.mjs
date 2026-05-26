@@ -10,10 +10,15 @@ const countrySchema = new mongoose.Schema({
             maxlength: [90, 'Máximo 90 caracteres']
         }
     },
+  // si la capital fuese obligatoria 
+
+
     capital: {
         type: [String],
         default: []
     },
+
+
     borders: {
         type: [String],
         default: []
