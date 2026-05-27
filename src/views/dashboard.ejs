@@ -14,33 +14,39 @@
 </div>
 
 <% if (paises && paises.length > 0) { %>
-    <table class="countries-table">
-        <thead>
-            <tr>
-                <th>Nombre oficial</th>
-                <th>Capital</th>
-                <th>Área (km²)</th>
-                <th>Población</th>
-                <th>GINI</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% paises.forEach(pais => { %>
+    <div class="table-responsive">
+        <table class="countries-table">
+            <thead>
                 <tr>
-                    <td><%= pais.name.official %></td>
-                    <td><%= pais.capital ? pais.capital.join(', ') : '-' %></td>
-                    <td><%= pais.area.toLocaleString() %></td>
-                    <td><%= pais.population.toLocaleString() %></td>
-                    <td><%= pais.gini || '-' %></td>
-                    <td class="table-actions">
-                        <a href="/paises/editar/<%= pais._id %>" class="btn edit">✏️ Editar</a>
-                        <button onclick="eliminar('<%= pais._id %>', '<%= pais.name.official %>')" class="btn delete">🗑️ Eliminar</button>
-                    </td>
+                    <th>Nombre oficial</th>
+                    <th>Capital(es)</th>
+                    <th>Bordes</th>
+                    <th>Área (km²)</th>
+                    <th>Población</th>
+                    <th>GINI</th>
+                    <th>Zonas horarias</th>
+                    <th>Acciones</th>
                 </tr>
-            <% }); %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% paises.forEach(pais => { %>
+                    <tr>
+                        <td><%= pais.name.official %></td>
+                        <td><%= pais.capital && pais.capital.length ? pais.capital.join(', ') : '-' %></td>
+                        <td><%= pais.borders && pais.borders.length ? pais.borders.join(', ') : '-' %></td>
+                        <td><%= pais.area ? pais.area.toLocaleString() : '-' %></td>
+                        <td><%= pais.population ? pais.population.toLocaleString() : '-' %></td>
+                        <td><%= pais.gini || '-' %></td>
+                        <td><%= pais.timezones && pais.timezones.length ? pais.timezones.join(', ') : '-' %></td>
+                        <td class="table-actions">
+                            <a href="/paises/editar/<%= pais._id %>" class="btn edit">✏️ Editar</a>
+                            <button onclick="eliminar('<%= pais._id %>', '<%= pais.name.official %>')" class="btn delete">🗑️ Eliminar</button>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
 <% } else { %>
     <div class="alert warning">⚠️ No hay países cargados. Ejecutá el script de seed primero.</div>
 <% } %>

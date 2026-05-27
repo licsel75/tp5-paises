@@ -9,46 +9,83 @@ body('name.official')
     .isLength({ min: 3, max: 90 }).withMessage('El nombre debe tener entre 3 y 90 caracteres')
     .trim()
     .custom(async (value, { req }) => {
-        // Si es una edición (PUT), omitimos la validación de unicidad
-        if (req.method === 'PUT') {
-            return true;
-        }
+        const isEditing = req.method === 'PUT';
+        const currentId = req.params.id;
         
-        // Solo para POST (agregar nuevo país)
-        const existingCountry = await Country.findOne({
+        const query = {
             'name.official': value,
             creador: 'Salim',
             tipoDocumento: 'pais'
-        });
+        };
+        
+        // Si es edición, excluir el país actual de la búsqueda
+        if (isEditing && currentId) {
+            query._id = { $ne: currentId };
+        }
+        
+        const existingCountry = await Country.findOne(query);
         
         if (existingCountry) {
-            throw new Error(`El país "${value}" ya existe en la base.`);
+            throw new Error(`El país "${value}" ya existe en la base de datos.`);
         }
         
         return true;
     }),
 
 
-   // capital: cada elemento 3-90 caracteres
-    body('capital')
-      //  .optional() // si voy a agregar o modificar un pais debo saber su capital, asumo esta postura
-        .notEmpty().withMessage('La capital es obligatoria')  //  esto la hace requerida
-        .customSanitizer(value => {
-            if (!value) return [];
-            if (typeof value === 'string') {
-                return value.split(',').map(c => c.trim());
+
+// capital: cada elemento 3-90 caracteres (OPCIONAL)
+// body('capital')
+//     .optional({ checkFalsy: true })
+//     .customSanitizer(value => {
+//         if (!value) return [];
+//         if (typeof value === 'string') {
+//             return value.split(',').map(c => c.trim());
+//         }
+//         return value;
+//     })
+//     .custom(value => {
+//         if (!value || value.length === 0) return true;
+//         for (const cap of value) {
+//             if (cap.length < 3 || cap.length > 90) {
+//                 throw new Error(`"${cap}" no es válido. Cada capital debe tener entre 3 y 90 caracteres.`);
+//             }
+//         }
+//         return true;
+//     }),
+
+
+
+
+
+
+ // capital: cada elemento 3-90 caracteres (OBLIGATORIO)
+body('capital')
+    .notEmpty().withMessage('La capital es obligatoria') // obligatoria
+    .customSanitizer(value => {
+        if (!value) return [];
+        if (typeof value === 'string') {
+            return value.split(',').map(c => c.trim());
+        }
+        return value;
+    })
+    .custom(value => {
+        if (value.length === 0) {
+            throw new Error('Debe ingresar al menos una capital');
+        }
+        for (const cap of value) {
+            if (cap.length < 3 || cap.length > 90) {
+                throw new Error(`"${cap}" no es válido. Cada capital debe tener entre 3 y 90 caracteres.`);
             }
-            return value;
-        })
-        .custom(value => {
-            if (!value || value.length === 0) return true;
-            for (const cap of value) {
-                if (cap.length < 3 || cap.length > 90) {
-                    throw new Error(`"${cap}" no es válido. Cada capital debe tener entre 3 y 90 caracteres.`);
-                }
-            }
-            return true;
-        }),
+        }
+        return true;
+    }),
+
+
+
+
+
+
     
         // borders: cada código 3 letras mayúsculas
     body('borders')

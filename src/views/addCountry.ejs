@@ -9,38 +9,50 @@
 <% } %>
 
 <form action="/paises/agregar" method="POST" class="country-form">
+    <!-- name.official -->
     <div class="form-group">
         <label>Nombre oficial *</label>
-        <!-- quité los required -->
-          <!-- <input type="text" name="name.official" value="<%= datos ? datos['name.official'] : '' %>" required > -->
-        <input type="text" name="name.official" value="<%= datos ? datos['name.official'] : '' %>" >
+        <input type="text" name="name.official" value="<%= datos ? datos['name.official'] : '' %>" required>
     </div>
 
+    <!-- capital -->
     <div class="form-group">
-        <label>Capital (separar múltiples con coma)</label>
+        <label>Capital(es) (separar múltiples con coma)</label>
         <input type="text" name="capital" value="<%= datos && datos.capital ? (Array.isArray(datos.capital) ? datos.capital.join(', ') : datos.capital) : '' %>">
+        <small>Ej: Buenos Aires o Buenos Aires, Córdoba</small>
     </div>
 
+    <!-- borders -->
     <div class="form-group">
         <label>Bordes (códigos de 3 letras, separados por coma)</label>
         <input type="text" name="borders" value="<%= datos && datos.borders ? (Array.isArray(datos.borders) ? datos.borders.join(', ') : datos.borders) : '' %>">
+        <small>Ej: ARG, BRA, URY (solo 3 letras mayúsculas)</small>
     </div>
 
+    <!-- area -->
     <div class="form-group">
         <label>Área (km²) *</label>
-        <!-- <input type="number" step="1" name="area" value="<%= datos ? datos.area : '' %>" required> -->
-          <input type="number" step="1" name="area" value="<%= datos ? datos.area : '' %>" >
+        <input type="number" step="1" name="area" value="<%= datos ? datos.area : '' %>" required>
     </div>
 
+    <!-- population -->
     <div class="form-group">
         <label>Población *</label>
-        <input type="number" step="1" name="population" value="<%= datos ? datos.population : '' %>" >
-         <!-- <input type="number" step="1" name="population" value="<%= datos ? datos.population : '' %>" required> -->
+        <input type="number" step="1" name="population" value="<%= datos ? datos.population : '' %>" required>
     </div>
 
+    <!-- gini -->
     <div class="form-group">
         <label>GINI (0-100)</label>
         <input type="number" step="0.1" name="gini" value="<%= datos ? datos.gini : '' %>">
+        <small>Coeficiente de desigualdad (opcional)</small>
+    </div>
+
+    <!-- timezones -->
+    <div class="form-group">
+        <label>Zonas horarias (separar múltiples con coma)</label>
+        <input type="text" name="timezones" value="<%= datos && datos.timezones ? (Array.isArray(datos.timezones) ? datos.timezones.join(', ') : datos.timezones) : '' %>">
+        <small>Ej: UTC-03:00, UTC-04:00</small>
     </div>
 
     <div class="form-actions">

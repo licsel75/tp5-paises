@@ -9,34 +9,50 @@
 <% } %>
 
 <form action="/paises/editar/<%= pais._id %>?_method=PUT" method="POST" class="country-form">
+    <!-- name.official -->
     <div class="form-group">
         <label>Nombre oficial *</label>
         <input type="text" name="name.official" value="<%= pais.name.official %>" required>
     </div>
 
+    <!-- capital -->
     <div class="form-group">
-        <label>Capital (separar múltiples con coma)</label>
-        <input type="text" name="capital" value="<%= pais.capital ? pais.capital.join(', ') : '' %>">
+        <label>Capital(es) (separar múltiples con coma)</label>
+        <input type="text" name="capital" value="<%= pais.capital && pais.capital.length ? pais.capital.join(', ') : '' %>">
+        <small>Ej: Buenos Aires o Buenos Aires, Córdoba</small>
     </div>
 
+    <!-- borders -->
     <div class="form-group">
         <label>Bordes (códigos de 3 letras, separados por coma)</label>
-        <input type="text" name="borders" value="<%= pais.borders ? pais.borders.join(', ') : '' %>">
+        <input type="text" name="borders" value="<%= pais.borders && pais.borders.length ? pais.borders.join(', ') : '' %>">
+        <small>Ej: ARG, BRA, URY (solo 3 letras mayúsculas)</small>
     </div>
 
+    <!-- area -->
     <div class="form-group">
         <label>Área (km²) *</label>
         <input type="number" step="1" name="area" value="<%= pais.area %>" required>
     </div>
 
+    <!-- population -->
     <div class="form-group">
         <label>Población *</label>
         <input type="number" step="1" name="population" value="<%= pais.population %>" required>
     </div>
 
+    <!-- gini -->
     <div class="form-group">
         <label>GINI (0-100)</label>
         <input type="number" step="0.1" name="gini" value="<%= pais.gini || '' %>">
+        <small>Coeficiente de desigualdad (opcional)</small>
+    </div>
+
+    <!-- timezones -->
+    <div class="form-group">
+        <label>Zonas horarias (separar múltiples con coma)</label>
+        <input type="text" name="timezones" value="<%= pais.timezones && pais.timezones.length ? pais.timezones.join(', ') : '' %>">
+        <small>Ej: UTC-03:00, UTC-04:00</small>
     </div>
 
     <div class="form-actions">
