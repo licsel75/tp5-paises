@@ -122,6 +122,9 @@ body('capital')
         .optional({ checkFalsy: true })
         .isFloat({ min: 0, max: 100 }).withMessage('El GINI debe ser un número entre 0 y 100'),
     
+
+
+        
     (req, res, next) => {
         const errors = validationResult(req);
         
@@ -149,7 +152,8 @@ body('capital')
                     borders: toArray(req.body.borders),
                     area: req.body.area,
                     population: req.body.population,
-                    gini: req.body.gini
+                    gini: req.body.gini,
+                    timezones: toArray(req.body.timezones) 
                 };
                 
                 return res.render('editCountry', {

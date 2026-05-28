@@ -26,7 +26,7 @@ router.post('/agregar', validateCountry, createCountryController);
 // RUTAS PARA EDITAR
 // ==========================================
 router.get('/editar/:id', showEditFormController);
-router.put('/editar/:id', validateCountry, updateCountryController);
+router.put('/editar/:id', validateCountry, updateCountryController);// antes de update, se ejecutan las validciones
 
 // ==========================================
 // RUTAS PARA ELIMINAR
