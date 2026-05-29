@@ -7,10 +7,34 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
+}
+
+/* ==========================================
+   MAIN CONTENEDOR
+   ========================================== */
+main {
+    flex: 1;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+h1 {
+    color: white;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
 /* ==========================================
@@ -45,8 +69,6 @@ body {
 .navbar ul li a:hover {
     background: rgba(255, 255, 255, 0.2);
 }
-
-
 
 /* ==========================================
    FORMULARIO DE BÚSQUEDA
@@ -86,75 +108,14 @@ body {
     width: 360px;
 }
 
-.btn.search {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 50px;
-    font-weight: bold;
-    transition: transform 0.2s;
-}
-
-.btn.search:hover {
-    transform: scale(1.02);
-    cursor: pointer;
-}
-
-.btn.clear {
-    background: #a0aec0;
-    color: white;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 50px;
-    text-decoration: none;
-    transition: background 0.3s;
-}
-
-.btn.clear:hover {
-    background: #718096;
-    cursor: pointer;
-}
-
-/* Responsive para búsqueda */
-@media (max-width: 768px) {
-    .search-container {
-        border-radius: 20px;
-        padding: 15px;
-    }
-    
-    .search-input {
-        width: 100%;
-    }
-    
-    .search-input:focus {
-        width: 100%;
-    }
-    
-    .search-form {
-        width: 100%;
-        flex-direction: column;
-    }
-}
-
-/* ==========================================
-   MAIN CONTENEDOR
-   ========================================== */
-main {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-h1 {
-    color: white;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
 /* ==========================================
    TABLA DE PAÍSES
    ========================================== */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .countries-table {
     width: 100%;
     background: white;
@@ -229,200 +190,10 @@ h1 {
    LANDING PAGE
    ========================================== */
 .landing {
-    max-width: 800px;
-    margin: 40px auto;
-    text-align: center;
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.landing h1 {
-    color: #667eea;
-    margin-bottom: 20px;
-}
-
-.landing-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-/* ==========================================
-   BOTONES
-   ========================================== */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 14px;
-    transition: background 0.3s;
-    text-align: center;
-}
-
-.btn.add {
-    background: #48bb78;
-    color: white;
-}
-
-.btn.edit {
-    background: #4299e1;
-    color: white;
-}
-
-.btn.delete {
-    background: #f56565;
-    color: white;
-}
-
-.btn.save {
-    background: #48bb78;
-    color: white;
-}
-
-.btn.cancel {
-    background: #a0aec0;
-    color: white;
-}
-
-/* ==========================================
-   FOOTER
-   ========================================== */
-footer {
-    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-    color: #cbd5e0;
-    text-align: center;
-    padding: 25px 20px;
-    margin-top: 60px;
-    font-size: 14px;
-    border-top: 1px solid #4a5568;
-}
-
-footer p {
-    margin: 5px 0;
-}
-
-footer a {
-    color: #a0aec0;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-footer a:hover {
-    color: #e2e8f0;
-    text-decoration: underline;
-}
-
-footer .footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-footer .footer-links {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-/* ==========================================
-   ALERTAS
-   ========================================== */
-.alert {
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.alert.warning {
-    background: #fefcbf;
-    color: #744210;
-    border: 1px solid #f6e05e;
-}
-
-.alert.error {
-    background: #fed7d7;
-    color: #742a2a;
-    border: 1px solid #feb2b2;
-}
-
-/* ==========================================
-   RESPONSIVE
-   ========================================== */
-@media (max-width: 768px) {
-    .countries-table {
-        font-size: 12px;
-    }
-
-    .countries-table th,
-    .countries-table td {
-        padding: 8px 10px;
-    }
-
-    .table-actions {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .navbar {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .navbar ul {
-        margin-top: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    footer .footer-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    
-}
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* ==========================================
-   ESTRUCTURA GENERAL (footer al fondo)
-   ========================================== */
-html, body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    flex: 1;  /* Empuja el footer hacia abajo */
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-    width: 100%;
-}
-
-/* ==========================================
-   LANDING PAGE MEJORADA
-   ========================================== */
-.landing {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 300px); /* Ajusta para que quede centrado */
+    min-height: calc(100vh - 300px);
 }
 
 .landing-content {
@@ -478,6 +249,114 @@ main {
     gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+/* ==========================================
+   ACERCA DE
+   ========================================== */
+.about {
+    max-width: 800px;
+    margin: 40px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.about h1 {
+    color: #667eea;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.about h2 {
+    color: #4a5568;
+    margin: 25px 0 15px 0;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+}
+
+.about ul {
+    margin-left: 25px;
+    color: #4a5568;
+}
+
+.about li {
+    margin: 8px 0;
+}
+
+.about-content p {
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   BOTONES
+   ========================================== */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.btn.add {
+    background: #48bb78;
+    color: white;
+}
+
+.btn.edit {
+    background: #4299e1;
+    color: white;
+}
+
+.btn.delete {
+    background: #f56565;
+    color: white;
+}
+
+.btn.save {
+    background: #48bb78;
+    color: white;
+}
+
+.btn.cancel {
+    background: #a0aec0;
+    color: white;
+}
+
+.btn.search {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.btn.search:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.btn.clear {
+    background: #a0aec0;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+}
+
+.btn.clear:hover {
+    background: #718096;
+    cursor: pointer;
 }
 
 .btn-primary {
@@ -486,7 +365,6 @@ main {
     padding: 12px 30px;
     border-radius: 50px;
     font-weight: bold;
-    transition: all 0.3s;
 }
 
 .btn-primary:hover {
@@ -501,7 +379,6 @@ main {
     padding: 12px 30px;
     border-radius: 50px;
     font-weight: bold;
-    transition: all 0.3s;
 }
 
 .btn-secondary:hover {
@@ -511,7 +388,28 @@ main {
 }
 
 /* ==========================================
-   FOOTER MEJORADO
+   ALERTAS
+   ========================================== */
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.alert.warning {
+    background: #fefcbf;
+    color: #744210;
+    border: 1px solid #f6e05e;
+}
+
+.alert.error {
+    background: #fed7d7;
+    color: #742a2a;
+    border: 1px solid #feb2b2;
+}
+
+/* ==========================================
+   FOOTER
    ========================================== */
 footer {
     background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
@@ -556,7 +454,53 @@ footer .footer-section p {
     margin: 0;
 }
 
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
 @media (max-width: 768px) {
+    .countries-table {
+        font-size: 12px;
+    }
+
+    .countries-table th,
+    .countries-table td {
+        padding: 8px 10px;
+    }
+
+    .table-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .navbar ul {
+        margin-top: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .search-container {
+        border-radius: 20px;
+        padding: 15px;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .search-input:focus {
+        width: 100%;
+    }
+    
+    .search-form {
+        width: 100%;
+        flex-direction: column;
+    }
+
     footer .footer-content {
         flex-direction: column;
         text-align: center;
@@ -566,43 +510,4 @@ footer .footer-section p {
     footer .footer-links {
         gap: 15px;
     }
-}
-
-/* ==========================================
-   ACERCA DE
-   ========================================== */
-.about {
-    max-width: 800px;
-    margin: 40px auto;
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.about h1 {
-    color: #667eea;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.about h2 {
-    color: #4a5568;
-    margin: 25px 0 15px 0;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 8px;
-}
-
-.about ul {
-    margin-left: 25px;
-    color: #4a5568;
-}
-
-.about li {
-    margin: 8px 0;
-}
-
-.about-content p {
-    color: #4a5568;
-    line-height: 1.6;
 }

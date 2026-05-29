@@ -22,7 +22,7 @@ El objetivo fue desarrollar una aplicación web completa que:
 
 
 
-## 🛠️ Tecnologías que usé
+##  Tecnologías que usé
 
  Tecnología y para qué sirvió 
 
@@ -40,10 +40,10 @@ El objetivo fue desarrollar una aplicación web completa que:
 
 
 
-## 🚀 Cómo ejecutar el proyecto
+##  Cómo ejecutar el proyecto
 
 ### 1. Clonar o descargar el proyecto
-git clone <url-del-repo>
+git clone <https://github.com/licsel75/tp5-paises>
 
 # Abrir terminal y navegar la la carpeta tp5-paises
 cd tp5-paises
@@ -53,10 +53,10 @@ npm install
 
 
 # Varaible de entorno
-MONGODB_URI=mongodb+srv://tu-usuario:tu-contraseña@cluster0.blryo.mongodb.net/NodeMod3Cohorte5
-PORT=3005
+crear archivo .env y 
+usar archivo .env.example con tu usario y contraseña par el mismo
 
-# Desde la terminal llenar nuestra base MongoDB Atlas
+# Para usar API extterna desde la terminal llenar nuestra base MongoDB Atlas
 node scripts/seedCountries.mjs
 
 # Iniciamos el servidor
