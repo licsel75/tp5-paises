@@ -3,141 +3,169 @@ import dotenv from 'dotenv';
 import { connectDB } from '../src/config/dbConfig.mjs';
 import Country from '../src/models/Country.mjs';
 
-// Cargar variables de entorno
 dotenv.config();
-
-// Conectar a MongoDB
 await connectDB();
 
 // ==========================================
-// 1. FUNCIÓN: Obtener países desde la API
-// ==========================================
-const fetchCountries = async () => {
+//  OBTENER PAÍSES DESDE LA API
+// =============================
+const obtenerPaisesDesdeAPI = async () => {
     try {
-        const response = await axios.get('https://restcountries.com/v3.1/region/america');
-        return response.data;
+        const respuesta = await axios.get('https://restcountries.com/v3.1/region/america');
+        return respuesta.data;
     } catch (error) {
         console.error('Error al obtener datos de la API:', error.message);
         process.exit(1);
     }
 };
 
+// ==================
+//  FILTRAR PAÍSES QUE HABLAN ESPAÑOL
 // ==========================================
-// 2. FUNCIÓN: Filtrar países que hablan español
-// ==========================================
-const filterSpanishSpeaking = (countries) => {
-    return countries.filter(country => {
-        return country.languages && country.languages.spa;
+const filtrarPorIdiomaEspanol = (paises) => {
+    return paises.filter(pais => {
+        return pais.languages && pais.languages.spa === 'Spanish';
     });
 };
 
+// ================================
+//  LIMPIAR Y TRANSFORMAR DATOS PERMITIA 1 'Nombre no disponible'
 // ==========================================
-// 3. FUNCIÓN: Limpiar propiedades y agregar datos necesarios
+// const limpiarDatosPais = (pais) => {
+//     // Procesar GINI: calcular promedio de todos los años disponibles
+//     let valorGini = null;
+//     if (pais.gini && typeof pais.gini === 'object') {
+//         const años = Object.keys(pais.gini);
+//         if (años.length > 0) {
+//             let suma = 0;
+//             let contador = 0;
+//             for (const año of años) {
+//                 const valor = pais.gini[año];
+//                 if (typeof valor === 'number') {
+//                     suma += valor;
+//                     contador++;
+//                 }
+//             }
+//             if (contador > 0) {
+//                 valorGini = parseFloat((suma / contador).toFixed(1));
+//             }
+//         }
+//     }
+
+//     return {
+//         name: {
+//             official: pais.name?.official || 'Nombre no disponible'
+//         },
+//         capital: pais.capital || [],
+//         borders: pais.borders || [],
+//         area: pais.area || 0,
+//         population: pais.population || 0,
+//         gini: valorGini,
+//         timezones: pais.timezones || [],
+//         creador: "Salim",
+//         tipoDocumento: "pais"
+//     };
+// };
+
+// ================================
+// LIMPIAR Y TRANSFORMAR DATOS , NO PERMITE NI UN 'Nombre no disponible'
 // ==========================================
-// const cleanCountryData = (country) => {
-    // Procesar GINI: la API devuelve { "2016": 31.9 }, tomamos el primer valor
-    // let giniValue = null;
-    // if (country.gini && typeof country.gini === 'object') {
-    //     const years = Object.keys(country.gini);
-    //     if (years.length > 0) {
-    //         giniValue = country.gini[years[0]];
-    //     }
-    // }
-const cleanCountryData = (country) => {
-    // para procesar GINI: scamos promedio
-    let giniValue = null;
-if (country.gini && typeof country.gini === 'object') {
-    const years = Object.keys(country.gini);
-    if (years.length > 0) {
-        let sum = 0;
-        let count = 0;
-        for (const year of years) {
-            const value = country.gini[year];
-            if (typeof value === 'number') {
-                sum += value;
-                count++;
+
+const limpiarDatosPais = (pais) => {
+    // VERIFICAR QUE EL NOMBRE EXISTA
+    const nombreOficial = pais.name?.official;
+    if (!nombreOficial || nombreOficial === '') {
+        console.warn(` País sin nombre oficial omitido:`, pais.name);
+        return null;
+    }
+
+    // Procesar GINI...
+    let valorGini = null;
+    if (pais.gini && typeof pais.gini === 'object') {
+        const años = Object.keys(pais.gini);
+        if (años.length > 0) {
+            let suma = 0;
+            let contador = 0;
+            for (const año of años) {
+                const valor = pais.gini[año];
+                if (typeof valor === 'number') {
+                    suma += valor;
+                    contador++;
+                }
+            }
+            if (contador > 0) {
+                valorGini = parseFloat((suma / contador).toFixed(1));
             }
         }
-        if (count > 0) {
-            giniValue = parseFloat((sum / count).toFixed(1));
-        }
     }
-}
 
     return {
-        name: {
-            official: country.name?.official || 'Nombre no disponible'
-        },
-        capital: country.capital || [],
-        borders: country.borders || [],
-        area: country.area || 0,
-        population: country.population || 0,
-        gini: giniValue,
-        timezones: country.timezones || [],
-        // ==========================================
-        // CAMPOS CLAVE PARA COLECCIÓN COMPARTIDA
-        // ==========================================
+        name: { official: nombreOficial },
+        capital: pais.capital || [],
+        borders: pais.borders || [],
+        area: pais.area || 0,
+        population: pais.population || 0,
+        gini: valorGini,
+        timezones: pais.timezones || [],
         creador: "Salim",
         tipoDocumento: "pais"
     };
 };
 
-// ==========================================
-// 4. FUNCIÓN: Guardar países en MongoDB (sin duplicados)
-// ==========================================
-const saveCountries = async (countries) => {
-    let savedCount = 0;
-    let skippedCount = 0;
 
-    for (const country of countries) {
-        // Buscar si ya existe un país con el mismo nombre oficial, mismo creador y mismo tipoDocumento
-        const exists = await Country.findOne({
-            'name.official': country.name.official,
+
+
+// ==========================================
+// 4. GUARDAR PAÍSES EN MONGODB (SIN DUPLICADOS)
+// ===================================
+const guardarPaisesEnDB = async (paises) => {
+    let guardados = 0;
+    let omitidos = 0;
+
+    for (const pais of paises) {
+        const existe = await Country.findOne({
+            'name.official': pais.name.official,
             creador: "Salim",
             tipoDocumento: "pais"
         });
 
-        if (!exists) {
-            await Country.create(country);
-            console.log(`✅ Guardado: ${country.name.official}`);
-            savedCount++;
+        if (!existe) {
+            await Country.create(pais);
+            console.log(`Guardado: ${pais.name.official}`);
+            guardados++;
         } else {
-            console.log(`⏭️ Saltado (ya existe): ${country.name.official}`);
-            skippedCount++;
+            console.log(`Omitido (ya existe): ${pais.name.official}`);
+            omitidos++;
         }
     }
 
-    console.log(`\n📊 Resumen: ${savedCount} países guardados, ${skippedCount} duplicados omitidos.`);
+    console.log(`\nResumen: ${guardados} paises guardados, ${omitidos} duplicados omitidos.`);
 };
 
+// ========================
+// 5. FUNCIÓN QUE INVOCA EN ORDEN A LAS ANTERIORES
 // ==========================================
-// 5. FUNCIÓN PRINCIPAL
-// ==========================================
-const seedDatabase = async () => {
-    console.log('🔄 Iniciando proceso de seed...\n');
+const ejecutarSeed = async () => {
+    console.log('Iniciando proceso de seed...\n');
 
-    // Paso 1: Obtener países de la API
-    console.log('📡 Obteniendo países de América...');
-    const allCountries = await fetchCountries();
-    console.log(`✅ Se obtuvieron ${allCountries.length} países de América.\n`);
+    console.log('Obteniendo paises de America...');
+    const todosLosPaises = await obtenerPaisesDesdeAPI(); //todos los paises que contine la API
+    console.log(`Se obtuvieron ${todosLosPaises.length} paises de America.\n`);
 
-    // Paso 2: Filtrar por idioma español
-    console.log('🔍 Filtrando países que hablan español...');
-    const spanishCountries = filterSpanishSpeaking(allCountries);
-    console.log(`✅ Países hispanohablantes: ${spanishCountries.length}\n`);
+    console.log('Filtrando paises que hablan español...');
+    const paisesHispanohablantes = filtrarPorIdiomaEspanol(todosLosPaises); // ya tengo los paises hispanohablantes
+    console.log(`Paises hispanohablantes: ${paisesHispanohablantes.length}\n`);
 
-    // Paso 3: Limpiar datos
-    console.log('🧹 Limpiando y transformando datos...');
-    const cleanedCountries = spanishCountries.map(cleanCountryData);
-    console.log(`✅ Datos limpios listos.\n`);
+    //LIMPIAR PAISES
+    console.log('Limpiando y transformando datos...');
+    const paisesLimpios = paisesHispanohablantes.map(limpiarDatosPais).filter(pais => pais !== null);
+    console.log(`Paises limpios (con nombre válido): ${paisesLimpios.length}\n`);
 
-    // Paso 4: Guardar en MongoDB
-    console.log('💾 Guardando en MongoDB (colección Grupo-15)...');
-    await saveCountries(cleanedCountries);
+    console.log('Guardando en MongoDB (coleccion Grupo-15)...');
+    await guardarPaisesEnDB(paisesLimpios);
 
-    console.log('\n🎉 ¡Seed completado exitosamente!');
+    console.log('\nSeed completado exitosamente.');
     process.exit(0);
 };
 
-// Ejecutar el seed
-seedDatabase();
+ejecutarSeed(); // INVOCACIÓN DE LA FUNCION PRINCIPAL

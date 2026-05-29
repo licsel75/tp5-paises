@@ -20,7 +20,7 @@ router.get('/dashboard', dashboardController);
 // RUTAS PARA AGREGAR
 // ==========================================
 router.get('/agregar', showAddFormController);
-router.post('/agregar', validateCountry, createCountryController);
+router.post('/agregar', validateCountry, createCountryController);// antes de crear , se ejecutan las validciones
 
 // ==========================================
 // RUTAS PARA EDITAR
@@ -32,6 +32,13 @@ router.put('/editar/:id', validateCountry, updateCountryController);// antes de 
 // RUTAS PARA ELIMINAR
 // ==========================================
 router.delete('/eliminar/:id', deleteCountryController);
+
+// Ruta para Acerca de
+router.get('/about', (req, res) => {
+    res.render('about', {
+        titulo: 'Acerca de - PaísesApp'
+    });
+});
 
 // ==========================================
 // REDIRECCIÓN PRINCIPAL

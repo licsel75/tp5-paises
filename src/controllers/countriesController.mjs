@@ -136,12 +136,12 @@ export const createCountryController = async (req, res) => {
 // Actualizar país (PUT)
 export const updateCountryController = async (req, res) => {
     try {
-        const { id } = req.params;
-        await countryService.updateCountry(id, req.body);
+        const { id } = req.params; // equivale a const id = req.params.id;
+        await countryService.updateCountry(id, req.body);// llamada al servicio, delegar lógica
         res.redirect('/paises/dashboard');
     } catch (error) {
-        console.error('Error en update:', error);
-        res.status(404).send('Error al actualizar: ' + error.message);
+        console.error('Error en update:', error);// en consola
+        res.status(404).send('Error al actualizar: ' + error.message); 
     }
 };
 
@@ -149,10 +149,10 @@ export const updateCountryController = async (req, res) => {
 export const deleteCountryController = async (req, res) => {
     try {
         const { id } = req.params;
-        await countryService.deleteCountry(id);
+        await countryService.deleteCountry(id); //delega al servicio
         res.status(200).json({ message: 'Eliminado correctamente' });
     } catch (error) {
         console.error('Error en delete:', error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message }); //Internal Server Error
     }
 };
